@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/aplicação/public/css/styles.css">
+
+    <title>Banking APP</title>
+</head>
+
+<body>
+    <!-- Logo da empresa -->
+    <div class="logo">
+        <img src="/aplicação/public/assets/logo-fl.png" alt="Logo">
+    </div>
+    
+    <!-- Aqui começa o formulário de login -->
+    <div class="container">
+        <form class="form-login">
+            <input type="email" placeholder="Email" required>
+            <input type="password" placeholder="Senha" required>
+            <div class="terms">
+                <input type="checkbox" id="agree" required>
+                <label for="agree">Eu concordo com os <a href="#">Termos</a></label>
+            </div>
+            <button type="submit">LOGIN</button>
+            <div class="forgotpass">
+                <a href="#">Esqueceu sua senha?</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Botão para abrir o formulário de cadastro -->
+    <div class="noRegister">
+        <label for="regist">Não tem registro? <button onclick="mostrarModal()">Cadastre aqui</button></label>
+    </div>
+
+    <!-- Formulário de cadastro -->
+    <div class="modal-bg" id="modalBg">
+        <form class="modal">
+            <span class="close" onclick="fecharModal()">&times;</span>
+            <input type="text" placeholder="Nome" required>
+            <input type="text" placeholder="Sobrenome" required>
+            <input type="text" placeholder="Nome de Usuário" required>
+            <input type="email" placeholder="Email" required>
+            <input type="password" placeholder="Senha" required>
+            <div class="terms">
+                <input type="checkbox" id="agree" required>
+                <label for="agree">Eu concordo com os <a href="#">Termos</a></label>
+            </div>
+            <button type="submit">Cadastrar</button>
+        </div>
+    </div>
+
+    <!-- Conexão com o JavaScript     -->
+    <script src="/aplicação/public/js/main.js"></script>
+</body>
+</html>
