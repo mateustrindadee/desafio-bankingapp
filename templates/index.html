@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/aplicação/public/css/styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 
     <title>Banking APP</title>
 </head>
@@ -12,14 +12,14 @@
 <body>
     <!-- Logo da empresa -->
     <div class="logo">
-        <img src="/aplicação/public/assets/logo-fl.png" alt="Logo">
+        <img src="/static/logo-fl.png" alt="Logo">
     </div>
-    
+
     <!-- Aqui começa o formulário de login -->
     <div class="container">
-        <form class="form-login">
-            <input type="email" placeholder="Email" required>
-            <input type="password" placeholder="Senha" required>
+        <form action="/login" method="post" class="form-login">
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Senha" required>
             <div class="terms">
                 <input type="checkbox" id="agree" required>
                 <label for="agree">Eu concordo com os <a href="#">Termos</a></label>
@@ -38,13 +38,15 @@
 
     <!-- Formulário de cadastro -->
     <div class="modal-bg" id="modalBg">
-        <form class="modal">
+        <form class="modal" onsubmit="return validatePassword()">
             <span class="close" onclick="fecharModal()">&times;</span>
-            <input type="text" placeholder="Nome" required>
-            <input type="text" placeholder="Sobrenome" required>
-            <input type="text" placeholder="Nome de Usuário" required>
-            <input type="email" placeholder="Email" required>
-            <input type="password" placeholder="Senha" required>
+            <input type="text" name="name" placeholder="Nome Completo" required>
+            <input type="number" name="cpf" placeholder="CPF (somente o número)" required>
+            <input type="number" name="cellphone" placeholder="Celular (DDD+número)" required>
+            <input type="date" name="date" placeholder="Data de nascimento" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" id="password" placeholder="Senha" required>
+            <input type="password" name="password" id="confirmPassword" placeholder="Confirmação de senha" required>
             <div class="terms">
                 <input type="checkbox" id="agree" required>
                 <label for="agree">Eu concordo com os <a href="#">Termos</a></label>
