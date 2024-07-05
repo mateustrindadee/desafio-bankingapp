@@ -31,9 +31,9 @@
             <button id="botaoTransferir" onclick="revelarTransferencia()">Transferencia</button>
             <div  id="transferencia" class="trans">
                 <h2>TRANSFERIR</h2>
-                <form">
+                <form action="/transferir-saldo" method="post">
                     <input type="number" step="0.1" id="valor" placeholder="Valor">
-                    <input type="text" id="destinatario" placeholder="Destinatario">
+                    <input type="text" id="destinUsercpf" placeholder="Destinatario">
                     <button class="transf" type="submit">Transferir</button>
                 </form>
             </div>
