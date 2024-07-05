@@ -1,4 +1,4 @@
-/* Estilização do corpo da página */
+/* Estilos gerais */
 body {
     background-color: #0F1022;
     display: flex;
@@ -11,20 +11,17 @@ body {
 }
 
 .logo {
-margin-bottom: 18rem;
-display: flex;
-justify-content: center;
-width: 80px;
-height: 70px;
+    margin-bottom: 2rem; 
 }
 
-/* Estilização do container de login */
 .container {
     background: linear-gradient(145deg, #1f1f38, #1b1b32);
-    position: absolute;
     padding: 30px;
     border-radius: 10px;
     box-shadow: 5px 5px 15px #0c0c24, -5px -5px 15px #141434;
+    width: 80%; 
+    max-width: 400px; 
+    margin-bottom: 2rem; 
 }
 
 /* Estilização do formulário de login */
@@ -68,17 +65,14 @@ height: 70px;
 .terms {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
-}
-
-.terms input {
-    margin-right: 10px;
+    margin-bottom: 15px; /* Ajuste para responsividade */
+    font-size: 14px; /* Ajuste para responsividade */
 }
 
 .terms label {
     color: #ddd;
-    font: 14px;
 }
+
 
 .terms a {
     color: #4d4dd9;
@@ -89,29 +83,30 @@ height: 70px;
     text-decoration: none;
 }
 
-
 /* Estilização "Esqueceu sua senha?" */
 .forgotpass {
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 10px;
+    font-size: 14px; /* Ajuste para responsividade */
 }
 
 .forgotpass a {
     color: #4d4dd9;
     text-decoration: none;
-    font: 14px;
+    font-size: 14px;
 }
 
 /* Estilização "Cadastre aqui" */
 .noRegister {
     background: linear-gradient(145deg, #1f1f38, #1b1b32);
-    position: flex;
     padding: 15px;
-    margin-top: 50px;
     border-radius: 10px;
     box-shadow: 5px 5px 15px #0c0c24, -5px -5px 15px #141434;
+    width: 80%; /* Ajuste para responsividade */
+    max-width: 400px; /* Limita a largura máxima */
+    text-align: center;
 }
 
 .noRegister label {
@@ -138,7 +133,7 @@ height: 70px;
 
 
 /* Formulário de cadastro */
-.modal-bg{
+.modal-bg {
     display: none;
     position: fixed;
     top: 0;
@@ -151,24 +146,15 @@ height: 70px;
     align-items: center;
 }
 
-.close{
-    position: relative;
-    bottom: 14px;
-    left: 210px;
-    font-size: 25px;
-    cursor: pointer;
-    color: #888;
-}
-
-.modal{
+.modal {
     background: linear-gradient(145deg, #1f1f38, #1b1b32);
     display: flex;
     flex-direction: column;
     padding: 30px;
     border-radius: 10px;
     box-shadow: 5px 5px 15px #0c0c24, -5px -5px 15px #141434;
-    width: 80%;
-    max-width: 400px;
+    width: 80%; /* Ajuste para responsividade */
+    max-width: 400px; /* Limita a largura máxima */
     text-align: center;
 }
 
@@ -176,7 +162,7 @@ height: 70px;
 .modal input[type="email"],
 .modal input[type="password"],
 .modal input[type="date"],
-.modal input[type="number"]{
+.modal input[type="number"] {
     background-color: #2c2c44;
     border: none;
     border-radius: 5px;
@@ -186,7 +172,7 @@ height: 70px;
     font-size: 16px;
 }
 
-.modal button{
+.modal button {
     background-color: #2c2c44;
     border: none;
     margin-top: 10px;
@@ -199,12 +185,21 @@ height: 70px;
 }
 
 .modal button:hover {
-    text-decoration: none;
     background-color: #3d3d55;
+    text-decoration: none;
 }
 
 .modal input::placeholder {
     color: #aaa;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 25px;
+    cursor: pointer;
+    color: #888;
 }
 
 .close:hover, 
@@ -212,14 +207,25 @@ height: 70px;
     color: black;
     text-decoration: none;
     cursor: pointer;
-  }
+}
 
+@media only screen and (max-width: 600px) {
+    .container,
+    .noRegister,
+    .modal {
+        width: 90%; /* Reduz a largura para telas menores */
+    }
 
+    .modal input[type="text"],
+    .modal input[type="email"],
+    .modal input[type="password"],
+    .modal input[type="date"],
+    .modal input[type="number"] {
+        font-size: 14px; /* Reduz o tamanho da fonte para telas menores */
+    }
 
-
-
-
-
-
-
-  
+    .terms,
+    .forgotpass {
+        font-size: 12px; /* Ajusta o tamanho da fonte para telas menores */
+    }
+}

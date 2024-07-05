@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/conta.css">
+
+    <title>Conta - BankingAPP</title>
+</head>
+<body>
+
+    <!-- Logo da empresa -->
+    <div class="logo">
+        <img src="/static/assets/logo-fl.png" alt="Logo">
+    </div>
+    
+    <!-- Aqui começa o formulário de login -->
+    <div class="container">
+        <main class="form-login">
+            <h2>DADOS DA CONTA</h2>
+            <p>Nome: <span id="name"></span></p>
+            <p>CPF: <span id="cpf"></span></p>
+            <p>Saldo <span id="saldo"></span></p>
+            <p>Tipo: <span id="tipo"></span></p>
+            <!-- <input type="email"  placeholder="Email" required>
+            <input type="password" name="password" placeholder="Senha" required> -->
+            <!-- <div class="terms">
+                <input type="checkbox" id="agree" required>
+                <label for="agree">Eu concordo com os <a href="#">Termos</a></label>
+            </div> -->
+            <button id="botaoTransferir" onclick="revelarTransferencia()">Transferencia</button>
+            <div  id="transferencia" class="trans">
+                <h2>TRANSFERIR</h2>
+                <form action="/transferir-saldo" method="post">
+                    <input type="number" id="valor" step="0.1" placeholder="Valor">
+                    <input type="text" id="destinUsercpf" placeholder="Destinatario">
+                    <button class="transf" type="submit">Transferir</button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <!-- Botão para abrir o formulário de cadastro -->
+    <div class="sair">
+        <button>Sair</button>
+    </div>
+
+    <script src="/static/js/main.js"></script>
+
+</body>
+</html>
