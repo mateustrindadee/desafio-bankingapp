@@ -20,8 +20,7 @@
             <h2>DADOS DA CONTA</h2>
             <p>Nome: <span id="name"></span></p>
             <p>CPF: <span id="cpf"></span></p>
-            <p>Saldo <span id="saldo"></span></p>
-            <p>Tipo: <span id="tipo"></span></p>
+            <p>Saldo R$<span id="saldo"></span></p>
             <!-- <input type="email"  placeholder="Email" required>
             <input type="password" name="password" placeholder="Senha" required> -->
             <!-- <div class="terms">
@@ -31,7 +30,7 @@
             <button id="botaoTransferir" onclick="revelarTransferencia()">Transferencia</button>
             <div  id="transferencia" class="trans">
                 <h2>TRANSFERIR</h2>
-                <form action="/transferir-saldo" method="post">
+                <form>
                     <input type="number" step="0.1" id="valor" placeholder="Valor">
                     <input type="text" id="destinUsercpf" placeholder="Destinatario">
                     <button class="transf" type="submit">Transferir</button>

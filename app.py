@@ -3,7 +3,6 @@ from flask_session import Session
 import sqlite3
 import hashlib
 import os
-from datetime import datetime
 
 
 app = Flask(__name__)
@@ -31,21 +30,6 @@ def init_db():
             saldo DECIMAL(10,2) NOT NULL
         )
     ''')
-    
-     # Tabela de transações
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS transactions (
-            idTransactions INTEGER PRIMARY KEY AUTOINCREMENT,
-            idOrigin INT NOT NULL, 
-            destinUsercpf VARCHAR(11) NOT NULL,
-            valor DECIMAL(10,2) NOT NULL,
-            dataTransf DATETIME NOT NULL,
-            FOREIGN KEY (idOrigin) REFERENCES users(idUser),
-            FOREIGN KEY (destinUsercpf) REFERENCES users(cpf)
-        )
-    ''')
-    conn.commit()
-    conn.close()
 
 init_db()
 
@@ -126,10 +110,10 @@ def login():
         return jsonify({'message': 'Login Credenciais inválidas'}), 401
 
 
+# Rota pra enviar os dados da conta para o Front-End
 @app.route('/dados_conta', methods=['GET'])
 def dados_conta():
     try:
-        # Obter idUser dos argumentos de consulta
         idUser = session.get('idUser')
         
         if not idUser:
@@ -152,60 +136,6 @@ def dados_conta():
             return jsonify({'message': 'Nenhum usuário encontrado'}), 404  
     except Exception as e:
         return jsonify({'error': str(e)}), 500 
-
-@app.route('/transferir-saldo', methods=['POST'])
-def transferir_saldo():
-    try:
-        idOrigin = request.form.get('idOrigin')
-        destinUsercpf = request.form.get('destinUsercpf')
-        valor = float(request.form.get('valor'))
-
-        app.logger.debug(f'ID Origin: {idOrigin}, Destinatário CPF: {destinUsercpf}, Valor: {valor}')
-
-        conn = sqlite3.connect('./instance/database.db')
-        cursor = conn.cursor()
-
-        # Verifica se os CPFs são válidos
-        cursor.execute('SELECT idUser, saldo FROM users WHERE cpf = ?', (idOrigin,))
-        origem = cursor.fetchone()
-        app.logger.debug(f'Origem: {origem}')
-        cursor.execute('SELECT idUser, saldo FROM users WHERE cpf = ?', (destinUsercpf,))
-        destinatario = cursor.fetchone()
-        app.logger.debug(f'Destinatário: {destinatario}')
-
-        if not origem or not destinatario:
-            flash('CPF de origem ou destinatário inválido!', 'error')
-            return redirect(url_for('index'))
-
-        # Verifica se há saldo suficiente na conta de origem
-        if origem[1] < valor:
-            flash('Saldo insuficiente para realizar a transferência!', 'error')
-            return redirect(url_for('index'))
-
-        # Atualiza o saldo do usuário de origem
-        novo_saldo_origem = origem[1] - valor
-        cursor.execute('UPDATE users SET saldo = ? WHERE idUser = ?', (novo_saldo_origem, origem[0]))
-        
-        # Atualiza o saldo do usuário destinatário
-        novo_saldo_destinatario = destinatario[1] + valor
-        cursor.execute('UPDATE users SET saldo = ? WHERE idUser = ?', (novo_saldo_destinatario, destinatario[0]))
-
-        # Registra a transação na tabela 'transactions'
-        data_transacao = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        cursor.execute('''
-            INSERT INTO transactions (idOrigin, idDestiny, valor, dataTransf)
-            VALUES (?, ?, ?, ?)
-        ''', (origem[0], destinatario[0], valor, data_transacao))
-
-        conn.commit()
-        conn.close()
-
-        flash('Transferência realizada com sucesso!', 'success')
-    except Exception as e:
-        app.logger.error(f'Erro durante a transferência: {str(e)}')
-        flash(f'Ocorreu um erro: {str(e)}', 'error')
-
-    return redirect(url_for('index'))
 
 
 # Retorna o erro no front-end

@@ -20,7 +20,6 @@ function validatePassword() {
     return true;
 }
 
-// }
 // Chama a função pra buscar os dados assim que a página carrega
 window.onload = buscarDadosConta;
 
@@ -54,7 +53,7 @@ fetch('/processar-dados', {
     headers: {
         'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ nome: 'valor' }) 
+    body: JSON.stringify({ nome: 'valor' })  
 })
 .then(response => {
     if (!response.ok) {
