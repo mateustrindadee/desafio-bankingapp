@@ -65,8 +65,8 @@ body {
 .terms {
     display: flex;
     align-items: center;
-    margin-bottom: 15px; /* Ajuste para responsividade */
-    font-size: 14px; /* Ajuste para responsividade */
+    margin-bottom: 15px;
+    font-size: 14px; 
 }
 
 .terms label {
@@ -89,7 +89,7 @@ body {
     justify-content: center;
     align-items: center;
     padding: 10px;
-    font-size: 14px; /* Ajuste para responsividade */
+    font-size: 14px; 
 }
 
 .forgotpass a {
@@ -104,8 +104,8 @@ body {
     padding: 15px;
     border-radius: 10px;
     box-shadow: 5px 5px 15px #0c0c24, -5px -5px 15px #141434;
-    width: 80%; /* Ajuste para responsividade */
-    max-width: 400px; /* Limita a largura máxima */
+    width: 80%;
+    max-width: 400px;
     text-align: center;
 }
 
@@ -153,8 +153,8 @@ body {
     padding: 30px;
     border-radius: 10px;
     box-shadow: 5px 5px 15px #0c0c24, -5px -5px 15px #141434;
-    width: 80%; /* Ajuste para responsividade */
-    max-width: 400px; /* Limita a largura máxima */
+    width: 80%; 
+    max-width: 400px; 
     text-align: center;
 }
 
@@ -209,11 +209,13 @@ body {
     cursor: pointer;
 }
 
+
+/* Ajuste para tela menores */
 @media only screen and (max-width: 600px) {
     .container,
     .noRegister,
     .modal {
-        width: 90%; /* Reduz a largura para telas menores */
+        width: 90%; 
     }
 
     .modal input[type="text"],
@@ -221,11 +223,11 @@ body {
     .modal input[type="password"],
     .modal input[type="date"],
     .modal input[type="number"] {
-        font-size: 14px; /* Reduz o tamanho da fonte para telas menores */
+        font-size: 14px; 
     }
 
     .terms,
     .forgotpass {
-        font-size: 12px; /* Ajusta o tamanho da fonte para telas menores */
+        font-size: 12px; 
     }
 }
