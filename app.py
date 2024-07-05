@@ -5,7 +5,7 @@ import os
 from datetime import datetime
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24)  # Para uso com mensagens flash
+app.secret_key = os.urandom(24) 
 
 # Conexão com o SQLite3
 def init_db():
@@ -125,7 +125,7 @@ def dados_conta():
     try:
         conn = sqlite3.connect('./instance/database.db')
         cursor = conn.cursor()
-        cursor.execute('SELECT name, cpf, saldo FROM users WHERE idUser >= 1')
+        cursor.execute('SELECT name, cpf, saldo FROM users WHERE idUser = ?'(idUser,))
         dados = cursor.fetchone()
         conn.close()
 
@@ -133,14 +133,13 @@ def dados_conta():
             dados_json = {
                 'name': dados[0],
                 'cpf': dados[1],
-                'saldo': float(dados[2])  # Converte saldo para float se necessário
+                'saldo': float(dados[2]) 
             }
-            return jsonify(dados_json), 200  # Retorna os dados em formato JSON com status 200
+            return jsonify(dados_json), 200  
         else:
-            return jsonify({'message': 'Nenhum usuário encontrado'}), 404  # Retorna mensagem de erro 404 se nenhum usuário for encontrado
+            return jsonify({'message': 'Nenhum usuário encontrado'}), 404  
     except Exception as e:
-        return jsonify({'error': str(e)}), 500  # Retorna mensagem de erro 500 se ocorrer algum problema no servidor
-
+        return jsonify({'error': str(e)}), 500 
 
 
 # Rota de transferência de saldo
@@ -201,7 +200,7 @@ def transferir_saldo():
 def processar_dados():
     dados = request.get_json()
     if 'nome' not in dados:
-        return jsonify({'erro': 'Nome não foi fornecido'}), 400  # Retorna erro 400 com JSON explicativo
+        return jsonify({'erro': 'Nome não foi fornecido'}), 400 
     return jsonify({'mensagem': 'Dados processados com sucesso'})
 
 if __name__ == '__main__':
