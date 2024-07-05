@@ -21,7 +21,7 @@ def init_db():
             cpf VARCHAR(11) NOT NULL,
             cellphone VARCHAR(11) NOT NULL,
             date DATE NOT NULL,
-            email VARCHAR(100) NOT NULL UNIQUE,
+            email VARCHAR(100) NOT NULL,
             password VARCHAR(100) NOT NULL
         )
     ''')
@@ -36,35 +36,29 @@ def index():
 
 @app.route('/register', methods=['POST'])
 def register():
-    try:
-        name = request.form['name']
-        cpf = request.form['cpf']
-        cellphone = request.form['cellphone']
-        date = request.form['date']
-        email = request.form['email']
-        password = request.form['password']
+    name = request.form['name']
+    cpf = request.form['cpf']
+    cellphone = request.form['cellphone']
+    date = request.form['date']
+    email = request.form['email']
+    password = request.form['password']
         
-        # Conectar ao banco de dados
-        conn = sqlite3.connect('./instance/database.db')
-        cursor = conn.cursor()
+    # Conectar ao banco de dados
+    conn = sqlite3.connect('./instance/database.db')
+    cursor = conn.cursor()
         
-        # Hash da senha
-        hashed_password = hashlib.sha256(password.encode()).hexdigest()
+    # Hash da senha
+    hashed_password = hashlib.sha256(password.encode()).hexdigest()
         
-        # Inserir usuário no banco de dados
-        cursor.execute('''
-            INSERT INTO users (name, cpf, cellphone, date, email, password)
-            VALUES (?, ?, ?, ?, ?, ?)
-        ''', (name, cpf, cellphone, date, email, hashed_password))
-        conn.commit()
-        conn.close()
-        
-        print('Cadastro realizado com sucesso!', 'success')
-    except sqlite3.IntegrityError as e:
-        if 'UNIQUE constraint failed: users.email' in str(e):
-            print(f'Este email já está cadastrado. Por favor, use outro email.')
-        else:
-            print(f'Ocorreu um erro: {str(e)}')
+    # Inserir usuário no banco de dados
+    cursor.execute('''
+        INSERT INTO users (name, cpf, cellphone, date, email, password)
+        VALUES (?, ?, ?, ?, ?, ?)
+    ''', (name, cpf, cellphone, date, email, hashed_password))
+    conn.commit()
+    conn.close()
+    print('Cadastro realizado com sucesso!')
+
 
     return redirect(url_for('index'))
 
