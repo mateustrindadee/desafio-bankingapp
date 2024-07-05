@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
@@ -17,11 +17,11 @@
 
     <!-- Aqui começa o formulário de login -->
     <div class="container">
-        <form action="/login" method="post" class="form-login">
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Senha" required>
+        <form class="form-login" action="/login" method="post">
+            <input type="email" name="email" placeholder="Email" >
+            <input type="password" name="password" placeholder="Senha" >
             <div class="terms">
-                <input type="checkbox" id="agree" required>
+                <input type="checkbox" id="agree" >
                 <label for="agree">Eu concordo com os <a href="#">Termos</a></label>
             </div>
             <button type="submit">LOGIN</button>
@@ -38,24 +38,24 @@
 
     <!-- Formulário de cadastro -->
     <div class="modal-bg" id="modalBg">
-        <form class="modal" onsubmit="return validatePassword()">
+        <form class="modal" action="/register" method="post" onsubmit="return validatePassword()">
             <span class="close" onclick="fecharModal()">&times;</span>
-            <input type="text" name="name" placeholder="Nome Completo" required>
-            <input type="number" name="cpf" placeholder="CPF (somente o número)" required>
-            <input type="number" name="cellphone" placeholder="Celular (DDD+número)" required>
-            <input type="date" name="date" placeholder="Data de nascimento" required>
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" id="password" placeholder="Senha" required>
-            <input type="password" name="password" id="confirmPassword" placeholder="Confirmação de senha" required>
+            <input type="text" name="name" placeholder="Nome Completo" >
+            <input type="number" name="cpf" placeholder="CPF (somente o número)" >
+            <input type="number" name="cellphone" placeholder="Celular (DDD+número)" >
+            <input type="date" name="date" placeholder="Data de nascimento" >
+            <input type="email" name="email" placeholder="Email" >
+            <input type="password" name="password" id="password" placeholder="Senha" >
+            <input type="password" name="password" id="confirmPassword" placeholder="Confirmação de senha" >
             <div class="terms">
-                <input type="checkbox" id="agree" required>
+                <input type="checkbox" id="agreeregister" >
                 <label for="agree">Eu concordo com os <a href="#">Termos</a></label>
             </div>
             <button type="submit">Cadastrar</button>
-        </div>
+        </form>
     </div>
 
     <!-- Conexão com o JavaScript     -->
-    <script src="/aplicação/public/js/main.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>
