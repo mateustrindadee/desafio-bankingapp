@@ -20,19 +20,7 @@ function validatePassword() {
     return true;
 }
 
-// Função pra puxar os dados da conta logada
-function buscarDadosConta(){
-    fetch('/dados_conta')
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('name').innerText = data.name;
-            document.getElementById('cpf').innerText = data.cpf;
-            document.getElementById('saldo').innerText = data.saldo;
-        })
-        .catch(error => {
-            console.error('Erro ao buscar dados da conta:', error)
-        });
-}
+// }
 // Chama a função pra buscar os dados assim que a página carrega
 window.onload = buscarDadosConta;
 
@@ -41,13 +29,32 @@ function revelarTransferencia(){
     document.getElementById('transferencia').style.display = "block";
 }
 
-//
+// Função para puxar os dados da conta logada
+function buscarDadosConta() {
+    fetch('/dados_conta')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao buscar dados da conta');
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('name').innerText = data.name;
+            document.getElementById('cpf').innerText = data.cpf;
+            document.getElementById('saldo').innerText = data.saldo;
+        })
+        .catch(error => {
+            console.error('Erro ao buscar dados da conta:', error);
+        });
+}
+
+// Exemplo de chamada da função buscarDadosConta após o login
 fetch('/processar-dados', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ nome: 'valor' })  // Exemplo de dados a serem enviados
+    body: JSON.stringify({ nome: 'valor' }) 
 })
 .then(response => {
     if (!response.ok) {
@@ -57,6 +64,7 @@ fetch('/processar-dados', {
 })
 .then(data => {
     console.log('Dados processados com sucesso:', data);
+    buscarDadosConta();  
 })
 .catch(error => {
     console.error('Erro:', error.message);

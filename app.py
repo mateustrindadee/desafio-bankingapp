@@ -1,11 +1,15 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for, flash
+from flask import Flask, render_template, request, jsonify, redirect, url_for, flash, session
+from flask_session import Session
 import sqlite3
 import hashlib
 import os
 from datetime import datetime
 
+
 app = Flask(__name__)
 app.secret_key = os.urandom(24) 
+app.config['SESSION_TYPE'] = 'filesystem'
+Session(app)
 
 # Conexão com o SQLite3
 def init_db():
@@ -24,7 +28,7 @@ def init_db():
             date DATE NOT NULL,
             email VARCHAR(100) NOT NULL UNIQUE,
             password VARCHAR(100) NOT NULL,
-            saldo DECIMAL(10,2) NOT NULL
+            saldo DECIMAL NOT NULL
         )
     ''')
     
@@ -32,10 +36,9 @@ def init_db():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS transactions (
             idTransactions INTEGER PRIMARY KEY AUTOINCREMENT,
-            idOrigin INT NOT NULL, 
             destinUsercpf VARCHAR(11) NOT NULL,
-            valor DECIMAL(10,2) NOT NULL,
-            dataTransf DATETIME NOT NULL,
+            valor DECIMAL NOT NULL,
+            dataTransf TEXT NOT NULL,
             FOREIGN KEY (idOrigin) REFERENCES users(idUser),
             FOREIGN KEY (destinUsercpf) REFERENCES users(cpf)
         )
@@ -114,18 +117,26 @@ def login():
         conn.close()
     
     if user:
+        session['idUser'] = user[0]
+        print(f'O {email} logou!')
         return render_template('conta.html')
     else:
-        flash('Login falhou', 'error')
-        return redirect(url_for('index'))
+        print(f'Login falhou')
+        return jsonify({'message': 'Login Credenciais inválidas'}), 401
 
 
 @app.route('/dados_conta', methods=['GET'])
 def dados_conta():
     try:
+        # Obter idUser dos argumentos de consulta
+        idUser = session.get('idUser')
+        
+        if not idUser:
+            return jsonify({'message': 'Usuário não está logado'}), 401
+
         conn = sqlite3.connect('./instance/database.db')
         cursor = conn.cursor()
-        cursor.execute('SELECT name, cpf, saldo FROM users WHERE idUser = ?'(idUser,))
+        cursor.execute('SELECT name, cpf, saldo FROM users WHERE idUser = ?', (idUser,))
         dados = cursor.fetchone()
         conn.close()
 
@@ -133,65 +144,13 @@ def dados_conta():
             dados_json = {
                 'name': dados[0],
                 'cpf': dados[1],
-                'saldo': float(dados[2]) 
+                'saldo': float(dados[2])  
             }
             return jsonify(dados_json), 200  
         else:
             return jsonify({'message': 'Nenhum usuário encontrado'}), 404  
     except Exception as e:
         return jsonify({'error': str(e)}), 500 
-
-
-# Rota de transferência de saldo
-@app.route('/transferir-saldo', methods=['POST'])
-def transferir_saldo():
-    try:
-        idOrigin = request.form['idOrigin']
-        destinUsercpf = request.form['destinUsercpf']
-        valor = float(request.form['valor'])
-        
-        conn = sqlite3.connect('./instance/database.db')
-        cursor = conn.cursor()
-        
-        # Verifica se os CPFs são válidos
-        cursor.execute('SELECT idUser, saldo FROM users WHERE cpf = ?', (idOrigin,))
-        origem = cursor.fetchone()
-        cursor.execute('SELECT idUser, saldo FROM users WHERE cpf = ?', (destinUsercpf,))
-        destinatario = cursor.fetchone()
-        
-        if not origem or not destinatario:
-            flash('CPF de origem ou destinatário inválido!', 'error')
-            return redirect(url_for('index'))
-        
-        # Verifica se há saldo suficiente na conta de origem
-        if origem[1] < valor:
-            flash('Saldo insuficiente para realizar a transferência!', 'error')
-            return redirect(url_for('index'))
-        
-        # Atualiza o saldo do usuário de origem
-        novo_saldo_origem = origem[1] - valor
-        cursor.execute('UPDATE users SET saldo = ? WHERE idUser = ?', (novo_saldo_origem, origem[0]))
-        
-        # Atualiza o saldo do usuário destinatário
-        novo_saldo_destinatario = destinatario[1] + valor
-        cursor.execute('UPDATE users SET saldo = ? WHERE idUser = ?', (novo_saldo_destinatario, destinatario[0]))
-        
-        # Registra a transação na tabela 'transactions'
-        data_transacao = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        cursor.execute('''
-            INSERT INTO transactions (idOrigin, idDestiny, valor, dataTransf)
-            VALUES (?, ?, ?, ?)
-        ''', (origem[0], destinatario[0], valor, data_transacao))
-        
-        conn.commit()
-        conn.close()
-        
-        flash('Transferência realizada com sucesso!', 'success')
-    except Exception as e:
-        flash(f'Ocorreu um erro: {str(e)}', 'error')
-    
-    return redirect(url_for('index'))
-
 
 
 
